@@ -10,8 +10,8 @@ env/
 *.env
 
 # Ignorar archivos de configuración sensibles
-settings.py
-local_settings.py
+# settings.py
+# local_settings.py
 
 # Ignorar archivos de registro
 *.log
