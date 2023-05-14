@@ -9,11 +9,9 @@ import json
 # Create your views here.
 class LibrosView(View):
     
-    
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-    
     
     def get(self, request, id=0):
         if id > 0:
@@ -22,18 +20,19 @@ class LibrosView(View):
                 libro = libros[0]
                 datos = {'message': "Success", 'libros': libro}
             else:
-                datos = {'message': "libros not found"}
+                datos = {'message': "Libro not found"}
             return JsonResponse(datos)
         else:
             status_param = request.GET.get('status', None)
             if status_param is not None and status_param.lower() in ['true', 'false']:
                 libros = list(Libro.objects.filter(status=status_param).values())
             else:
-                libros = list(Libro.objects.values())
+                libros = []
+
             if len(libros) > 0:
                 datos = {'message': "Success", 'libros': libros}
             else:
-                datos = {'message': "libros not found"}
+                datos = {'message': "Libros not found"}
 
             return JsonResponse(datos)
 
@@ -55,7 +54,7 @@ class LibrosView(View):
     #             datos={'message': "libros not found"}
             
     #         return JsonResponse(datos)
-
+    
     def post(self, request):
         jd = json.loads(request.body)
         Libro.objects.create(titulo = jd['titulo'],autor = jd['autor'], editorial = jd['editorial'], ncapitulos = jd['ncapitulos'], npaginas = jd['npaginas'], isbn = jd['isbn'], actual = jd['actual'], status = jd['status'] )
@@ -83,4 +82,3 @@ class LibrosView(View):
         else:
             datos={'message': "Usuarios not found"}
         return JsonResponse(datos)
-    
