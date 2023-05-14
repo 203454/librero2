@@ -12,7 +12,7 @@ class LibrosView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-    
+        
     def get(self, request, id=0):
         if id > 0:
             libros = list(Libro.objects.filter(id=id).values())
@@ -25,7 +25,8 @@ class LibrosView(View):
         else:
             status_param = request.GET.get('status', None)
             if status_param is not None and status_param.lower() in ['true', 'false']:
-                libros = list(Libro.objects.filter(status=status_param).values())
+                status = True if status_param.lower() == 'true' else False
+                libros = list(Libro.objects.filter(status=status).values())
                 if len(libros) > 0:
                     datos = {'message': "Success", 'libros': libros}
                 else:
@@ -33,6 +34,7 @@ class LibrosView(View):
             else:
                 datos = {'message': "Invalid status parameter"}
             return JsonResponse(datos)
+
 
 
         
