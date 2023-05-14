@@ -8,6 +8,8 @@ from .views import LibrosView
 urlpatterns = [
     path('libro/',LibrosView.as_view(), name='libro_list'),
     path('libro/<int:id>',LibrosView.as_view(),name='libro_process'),
+    path('libro/status/', LibrosView.as_view(), name='libro_status'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

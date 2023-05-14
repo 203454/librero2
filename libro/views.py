@@ -26,15 +26,14 @@ class LibrosView(View):
             status_param = request.GET.get('status', None)
             if status_param is not None and status_param.lower() in ['true', 'false']:
                 libros = list(Libro.objects.filter(status=status_param).values())
+                if len(libros) > 0:
+                    datos = {'message': "Success", 'libros': libros}
+                else:
+                    datos = {'message': "Libros not found"}
             else:
-                libros = []
-
-            if len(libros) > 0:
-                datos = {'message': "Success", 'libros': libros}
-            else:
-                datos = {'message': "Libros not found"}
-
+                datos = {'message': "Invalid status parameter"}
             return JsonResponse(datos)
+
 
         
     # def get(self, request, id=0):
